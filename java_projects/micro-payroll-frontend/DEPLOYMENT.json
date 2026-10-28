@@ -1,0 +1,10 @@
+{
+  "provider": "Vercel",
+  "project": "micro-payroll",
+  "projectId": "prj_JZcf2YwqeGdL0R937LZgkKTrZvOh",
+  "deploymentId": "dpl_GSMHaHXzQ2w8nr85vw9Ygn4c52wX",
+  "url": "https://micro-payroll-zeta.vercel.app",
+  "environment": "production",
+  "status": "READY",
+  "mode": "Static frontend; browser calculations and local browser storage"
+}

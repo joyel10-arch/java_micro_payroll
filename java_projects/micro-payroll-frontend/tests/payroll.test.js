@@ -1,0 +1,8 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {calculate,validate,parseCSV} from '../dist/payroll.js';
+const e={employeeId:'E101',name:'Arun',designation:'Developer',basicPay:30000,hra:10000,da:3000,conveyance:2000,workingDays:24,overtimeHours:5,investment80C:50000};
+test('Repository employee payroll matches independently computed amounts',()=>{const c=calculate(e);assert.equal(c.gross,45000);assert.equal(c.pf,3600);assert.equal(c.annualIncome,540000);assert.equal(c.taxableIncome,490000);assert.equal(c.annualTax,9500);assert.ok(Math.abs(c.net-40408.333333333336)<1e-8);});
+test('Tax slabs and investment cap match Java',()=>{for(const [income,expected] of [[300000,0],[600000,15000],[900000,45000],[1200000,90000]])assert.equal(calculate({...e,basicPay:income/12,hra:0,da:0,conveyance:0,investment80C:0}).annualTax,expected);assert.equal(calculate({...e,investment80C:999999}).taxableIncome,390000);});
+test('Rejects invalid salaries and attendance',()=>{assert.ok(validate({...e,basicPay:NaN}));assert.ok(validate({...e,workingDays:32}));assert.ok(validate({...e,workingDays:2.5}));assert.ok(validate({...e,name:''}));assert.equal(validate(e),'');});
+test('CSV handles quotes, BOM, header and malformed numeric values',()=>{const parsed=parseCSV('\uFEFFemployeeId,name,designation,basicPay,hra,da,conveyance,workingDays,overtimeHours,investment80C\r\nE101,"Arun, Kumar",Developer,30000,10000,3000,2000,24,5,50000\r\nE104,Alex,Developer,abc,0,0,0,20,0,0');assert.equal(parsed.length,2);assert.equal(parsed[0].name,'Arun, Kumar');assert.equal(validate(parsed[0]),'');assert.ok(validate(parsed[1]));assert.throws(()=>parseCSV('"unclosed'));});
