@@ -1,0 +1,8 @@
+======= COMPANY PAYROLL SUMMARY =======
+Total Employees: 3
+Total Monthly Gross Salary: Rs. 140000.00
+Total Monthly PF: Rs. 11400.00
+Total Monthly Professional Tax: Rs. 600.00
+Total Monthly TDS: Rs. 2816.67
+Total Monthly Net Salary: Rs. 125183.33
+=======================================
